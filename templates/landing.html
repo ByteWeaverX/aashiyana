@@ -1,0 +1,407 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>aashiyana — Premium Property Platform in India</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/landing-premium.css') }}">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body class="landing-body">
+    <!-- ===== NAVIGATION ===== -->
+    <nav class="navbar-premium" id="navbar">
+        <div class="navbar-container">
+            <div class="navbar-brand">
+                <h1 class="brand-logo">
+                    <span class="brand-icon">🏡</span>aashiyana
+                </h1>
+                <p class="brand-tagline">Premium Homes. Smart Investments.</p>
+            </div>
+
+            <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="#hero" class="nav-link">Home</a></li>
+                <li><a href="#features" class="nav-link">Features</a></li>
+                <li><a href="#properties" class="nav-link">Properties</a></li>
+                <li><a href="#testimonials" class="nav-link">Testimonials</a></li>
+                <li><a href="#contact" class="nav-link">Contact</a></li>
+            </ul>
+
+            <div class="nav-auth">
+                <a href="{{ url_for('signin') }}" class="btn btn-outline-nav">Login</a>
+                <a href="{{ url_for('signup') }}" class="btn btn-primary-nav">Sign Up</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- ===== HERO SECTION ===== -->
+    <section id="hero" class="hero-premium">
+        <div class="hero-container">
+            <div class="hero-content">
+                <h1 class="hero-title">
+                    Find Your Dream <span class="accent-gold">Home</span>
+                </h1>
+                <p class="hero-subtitle">
+                    Discover premium properties, AI-powered valuations, and investment-grade insights to build wealth through real estate.
+                </p>
+
+                <div class="hero-cta-buttons">
+                    <a href="{{ url_for('signup') }}" class="btn btn-primary-large">
+                        <i class="fas fa-home"></i> Start Exploring
+                    </a>
+                    <a href="#features" class="btn btn-secondary-large">
+                        <i class="fas fa-arrow-down"></i> Learn More
+                    </a>
+                </div>
+
+                <div class="hero-stats">
+                    <div class="stat">
+                        <h3>50K+</h3>
+                        <p>Premium Listings</p>
+                    </div>
+                    <div class="stat">
+                        <h3>100K+</h3>
+                        <p>Happy Investors</p>
+                    </div>
+                    <div class="stat">
+                        <h3>₹2B+</h3>
+                        <p>Properties Valued</p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="hero-image">
+                <img src="https://images.pexels.com/photos/280222/pexels-photo-280222.jpeg?auto=compress&cs=tinysrgb&w=800" 
+                     alt="Luxury Modern Home" class="hero-img" loading="lazy">
+                <div class="image-overlay"></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURES SECTION ===== -->
+    <section id="features" class="features-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Why Choose <span class="accent-gold">aashiyana</span>?</h2>
+                <p>Cutting-edge technology meets real estate expertise</p>
+            </div>
+
+            <div class="features-grid">
+                <!-- Feature 1: AI Valuations -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-brain"></i>
+                    </div>
+                    <h3>AI-Powered Valuations</h3>
+                    <p>Get accurate, explainable price estimates for any property using our trained ML model. Know real market value in seconds.</p>
+                    <a href="#" class="feature-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <!-- Feature 2: Heatmaps -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-map-location-dot"></i>
+                    </div>
+                    <h3>Neighborhood Heatmaps</h3>
+                    <p>Explore detailed locality analytics with price trends, growth zones, and investment opportunities visualized on interactive maps.</p>
+                    <a href="#" class="feature-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <!-- Feature 3: Investment Tools -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-chart-line"></i>
+                    </div>
+                    <h3>Investment Planning</h3>
+                    <p>Calculate EMI, analyze ROI, and plan your property portfolio with our suite of financial planning tools.</p>
+                    <a href="#" class="feature-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <!-- Feature 4: Curated Listings -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <h3>Verified Listings</h3>
+                    <p>Handpicked premium properties with full transparency. Every listing verified for authenticity and legality.</p>
+                    <a href="#" class="feature-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <!-- Feature 5: Local Insights -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-lightbulb"></i>
+                    </div>
+                    <h3>Market Insights</h3>
+                    <p>Access detailed neighborhood reports including schools, hospitals, transportation, and future development plans.</p>
+                    <a href="#" class="feature-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+
+                <!-- Feature 6: Expert Support -->
+                <div class="feature-card">
+                    <div class="feature-icon">
+                        <i class="fas fa-headset"></i>
+                    </div>
+                    <h3>24/7 Expert Support</h3>
+                    <p>Our real estate experts are always ready to guide you through every step of your property journey.</p>
+                    <a href="#" class="feature-link">Learn More <i class="fas fa-arrow-right"></i></a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FEATURED PROPERTIES SECTION ===== -->
+    <section id="properties" class="properties-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Featured <span class="accent-gold">Properties</span></h2>
+                <p>Premium listings curated just for you</p>
+            </div>
+
+            <div class="properties-grid">
+                <!-- Property Card 1 -->
+                <div class="property-card">
+                    <div class="property-image-wrapper">
+                        <img src="https://images.pexels.com/photos/5997888/pexels-photo-5997888.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                             alt="Luxury Penthouse" class="property-image" loading="lazy">
+                        <div class="property-badge">Featured</div>
+                        <div class="property-overlay">
+                            <button class="btn-view-details">View Details</button>
+                        </div>
+                    </div>
+                    <div class="property-details">
+                        <h3>Luxury Penthouse, South Delhi</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Gurgaon</p>
+                        <div class="property-specs">
+                            <span><i class="fas fa-bed"></i> 4 BHK</span>
+                            <span><i class="fas fa-bath"></i> 4 Bath</span>
+                            <span><i class="fas fa-ruler"></i> 3500 Sq.ft</span>
+                        </div>
+                        <div class="property-footer">
+                            <p class="property-price">₹3.5 Cr</p>
+                            <p class="property-per-sqft">₹1 L/sq.ft</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property Card 2 -->
+                <div class="property-card">
+                    <div class="property-image-wrapper">
+                        <img src="https://images.pexels.com/photos/3615619/pexels-photo-3615619.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                             alt="Modern Villa" class="property-image" loading="lazy">
+                        <div class="property-badge badge-new">New</div>
+                        <div class="property-overlay">
+                            <button class="btn-view-details">View Details</button>
+                        </div>
+                    </div>
+                    <div class="property-details">
+                        <h3>Modern Villa, Bangalore</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Koramangala</p>
+                        <div class="property-specs">
+                            <span><i class="fas fa-bed"></i> 5 BHK</span>
+                            <span><i class="fas fa-bath"></i> 5 Bath</span>
+                            <span><i class="fas fa-ruler"></i> 4000 Sq.ft</span>
+                        </div>
+                        <div class="property-footer">
+                            <p class="property-price">₹2.8 Cr</p>
+                            <p class="property-per-sqft">₹70 L/sq.ft</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Property Card 3 -->
+                <div class="property-card">
+                    <div class="property-image-wrapper">
+                        <img src="https://images.pexels.com/photos/1396122/pexels-photo-1396122.jpeg?auto=compress&cs=tinysrgb&w=600" 
+                             alt="Waterfront Apartment" class="property-image" loading="lazy">
+                        <div class="property-badge badge-hot">Hot Deal</div>
+                        <div class="property-overlay">
+                            <button class="btn-view-details">View Details</button>
+                        </div>
+                    </div>
+                    <div class="property-details">
+                        <h3>Waterfront Apartment, Mumbai</h3>
+                        <p class="property-location"><i class="fas fa-map-marker-alt"></i> Bandra</p>
+                        <div class="property-specs">
+                            <span><i class="fas fa-bed"></i> 3 BHK</span>
+                            <span><i class="fas fa-bath"></i> 3 Bath</span>
+                            <span><i class="fas fa-ruler"></i> 2200 Sq.ft</span>
+                        </div>
+                        <div class="property-footer">
+                            <p class="property-price">₹4.2 Cr</p>
+                            <p class="property-per-sqft">₹1.9 L/sq.ft</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="properties-cta">
+                <a href="{{ url_for('dashboard') }}" class="btn btn-primary-large">
+                    <i class="fas fa-magnifying-glass"></i> Explore All Properties
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TESTIMONIALS SECTION ===== -->
+    <section class="testimonials-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>What Our <span class="accent-gold">Investors</span> Say</h2>
+                <p>Join thousands of satisfied customers</p>
+            </div>
+
+            <div class="testimonials-grid">
+                <!-- Testimonial 1 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"aashiyana's AI valuation tool helped me identify undervalued properties. I've made a 12% ROI in just 18 months!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">RK</div>
+                        <div>
+                            <p class="author-name">Rajesh Kumar</p>
+                            <p class="author-title">Real Estate Investor</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 2 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"The neighborhood heatmaps gave me insights that no other platform provides. Found a gem in Bangalore!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">SP</div>
+                        <div>
+                            <p class="author-name">Sneha Patel</p>
+                            <p class="author-title">Home Buyer</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Testimonial 3 -->
+                <div class="testimonial-card">
+                    <div class="testimonial-stars">
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                        <i class="fas fa-star"></i>
+                    </div>
+                    <p class="testimonial-text">"The EMI calculator and investment planning tools are a game-changer. Makes financial planning so simple!"</p>
+                    <div class="testimonial-author">
+                        <div class="author-avatar">AM</div>
+                        <div>
+                            <p class="author-name">Arjun Mehta</p>
+                            <p class="author-title">Property Developer</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== TRUST BADGES SECTION ===== -->
+    <section class="trust-section">
+        <div class="container">
+            <h2>Trusted by Industry Leaders</h2>
+            <div class="trust-badges">
+                <div class="badge"><i class="fas fa-shield-alt"></i> <span>100% Verified</span></div>
+                <div class="badge"><i class="fas fa-lock"></i> <span>Secure & Encrypted</span></div>
+                <div class="badge"><i class="fas fa-award"></i> <span>Industry Certified</span></div>
+                <div class="badge"><i class="fas fa-users"></i> <span>24/7 Support</span></div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== CTA SECTION ===== -->
+    <section class="cta-section">
+        <div class="container">
+            <div class="cta-content">
+                <h2>Ready to Find Your Dream Home?</h2>
+                <p>Join thousands of investors and home buyers who trust aashiyana</p>
+                <a href="{{ url_for('signup') }}" class="btn btn-primary-large btn-cta">
+                    <i class="fas fa-sign-in-alt"></i> Get Started Today
+                </a>
+            </div>
+        </div>
+    </section>
+
+    <!-- ===== FOOTER ===== -->
+    <footer class="footer-premium" id="contact">
+        <div class="footer-content container">
+            <div class="footer-section">
+                <h4>aashiyana</h4>
+                <p>Premium homes. Smart investments. Your property journey starts here.</p>
+                <div class="social-links">
+                    <a href="#" aria-label="Facebook"><i class="fab fa-facebook"></i></a>
+                    <a href="#" aria-label="Twitter"><i class="fab fa-twitter"></i></a>
+                    <a href="#" aria-label="Instagram"><i class="fab fa-instagram"></i></a>
+                    <a href="#" aria-label="LinkedIn"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="#features">Features</a></li>
+                    <li><a href="#properties">Properties</a></li>
+                    <li><a href="#testimonials">Testimonials</a></li>
+                    <li><a href="{{ url_for('signin') }}">Login</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="#">Help Center</a></li>
+                    <li><a href="#">Contact Us</a></li>
+                    <li><a href="#">FAQ</a></li>
+                    <li><a href="#">Blog</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Legal</h4>
+                <ul>
+                    <li><a href="#">Privacy Policy</a></li>
+                    <li><a href="#">Terms of Service</a></li>
+                    <li><a href="#">Cookie Policy</a></li>
+                    <li><a href="#">Compliance</a></li>
+                </ul>
+            </div>
+
+            <div class="footer-section">
+                <h4>Contact</h4>
+                <p><i class="fas fa-envelope"></i> <a href="mailto:support@aashiyana.local">support@aashiyana.local</a></p>
+                <p><i class="fas fa-phone"></i> <a href="tel:+919876543210">+91 98765 43210</a></p>
+                <p><i class="fas fa-map-marker-alt"></i> New Delhi, India</p>
+            </div>
+        </div>
+
+        <div class="footer-bottom">
+            <p>&copy; 2024 aashiyana. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/landing.js') }}"></script>
+</body>
+</html>

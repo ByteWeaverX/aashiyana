@@ -46,9 +46,11 @@ def load_user(user_id):
 @app.route('/')
 def index():
     """Landing page - redirect to dashboard or signin"""
+    # Show a friendly landing page to unauthenticated users.
     if current_user.is_authenticated:
         return redirect(url_for('dashboard'))
-    return redirect(url_for('dashboard'))  # Allow viewing dashboard without login
+    # Render the new landing page for visitors
+    return render_template('landing.html')
 
 
 @app.route('/signup', methods=['GET', 'POST'])

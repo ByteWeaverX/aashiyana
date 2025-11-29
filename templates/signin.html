@@ -3,109 +3,230 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Sign In - HomeAI</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <title>Login - aashiyana | Premium Real Estate Platform</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/auth-premium.css') }}">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;900&display=swap" rel="stylesheet">
+    <script src="https://accounts.google.com/gsi/client" async defer></script>
 </head>
 <body>
-    <div class="login-page">
-        <div class="login-container">
-            <div class="login-left">
-                <div class="logo-section">
-                    <div class="logo-icon">
-                        <i class="fas fa-home"></i>
+    <div class="auth-container">
+        <!-- Left Section: Login Form -->
+        <div class="auth-left">
+            <div class="auth-content">
+                <!-- Logo Section -->
+                <div class="auth-logo-section">
+                    <div class="auth-logo">
+                        <div class="auth-logo-icon">🏡</div>
+                        <div>
+                            <h1>aashiyana</h1>
+                            <p>Premium Homes. Smart Investments.</p>
+                        </div>
                     </div>
-                    <h1>HomeAI</h1>
-                    <p class="tagline">AI-Powered Property Search & Valuation</p>
                 </div>
 
-                <div class="login-form">
-                    <h2>Sign In</h2>
-                    <p class="subtitle">Welcome back! Please sign in to continue</p>
+                <!-- Form Wrapper -->
+                <div class="auth-form-wrapper">
+                    <div class="auth-form">
+                        <h2>Welcome Back</h2>
+                        <p class="auth-form-subtitle">Sign in to your aashiyana account</p>
 
-                    <!-- Demo Accounts Info -->
-                    <div class="demo-accounts-info">
-                        <p style="font-size: 13px; color: #6B7280; margin-bottom: 10px;">
-                            <i class="fas fa-info-circle"></i> <strong>Demo Accounts:</strong>
-                        </p>
-                        <div style="font-size: 12px; color: #6B7280; line-height: 1.8;">
-                            <div>🛒 <strong>Buyer:</strong> demo@homeai.com / demo123</div>
-                            <div>🏪 <strong>Seller:</strong> seller@homeai.com / seller123</div>
-                        </div>
-                    </div>
+                        <!-- Flash Messages -->
+                        {% with messages = get_flashed_messages(with_categories=true) %}
+                            {% if messages %}
+                                {% for category, message in messages %}
+                                    {% if category == 'error' %}
+                                    <div class="error-message">
+                                        <i class="fas fa-exclamation-circle"></i>
+                                        {{ message }}
+                                    </div>
+                                    {% elif category == 'success' %}
+                                    <div class="success-message">
+                                        <i class="fas fa-check-circle"></i>
+                                        {{ message }}
+                                    </div>
+                                    {% else %}
+                                    <div class="info-message">
+                                        <i class="fas fa-info-circle"></i>
+                                        {{ message }}
+                                    </div>
+                                    {% endif %}
+                                {% endfor %}
+                            {% endif %}
+                        {% endwith %}
 
-                    {% with messages = get_flashed_messages(with_categories=true) %}
-                        {% if messages %}
-                            {% for category, message in messages %}
-                                <div class="alert alert-{{ category }}">
-                                    {{ message }}
+                        <!-- Login Form -->
+                        <form method="POST" action="{{ url_for('signin') }}" id="loginForm">
+                            <!-- Email Input -->
+                            <div class="form-group">
+                                <label for="email">
+                                    <i class="fas fa-envelope"></i>
+                                    Email Address
+                                </label>
+                                <input 
+                                    type="email" 
+                                    id="email" 
+                                    name="email" 
+                                    placeholder="your@email.com" 
+                                    required
+                                    autofocus
+                                >
+                            </div>
+
+                            <!-- Password Input -->
+                            <div class="form-group">
+                                <label for="password">
+                                    <i class="fas fa-lock"></i>
+                                    Password
+                                </label>
+                                <div style="position: relative;">
+                                    <input 
+                                        type="password" 
+                                        id="password" 
+                                        name="password" 
+                                        placeholder="••••••••" 
+                                        required
+                                    >
+                                    <button type="button" class="password-toggle" onclick="togglePasswordVisibility('password')">
+                                        <i class="fas fa-eye"></i>
+                                    </button>
                                 </div>
-                            {% endfor %}
-                        {% endif %}
-                    {% endwith %}
+                            </div>
 
-                    <form method="POST" action="{{ url_for('signin') }}" class="auth-form">
-                        <div class="form-group">
-                            <label for="email">Email Address</label>
-                            <div class="input-group">
-                                <i class="fas fa-envelope"></i>
-                                <input type="email" id="email" name="email" placeholder="Enter your email" required autofocus>
+                            <!-- Remember Me & Forgot Password -->
+                            <div class="form-options">
+                                <label class="remember-me">
+                                    <input type="checkbox" name="remember_me" id="remember_me">
+                                    <span>Remember me</span>
+                                </label>
+                                <a href="#" class="forgot-password">Forgot password?</a>
+                            </div>
+
+                            <!-- Submit Button -->
+                            <button type="submit" class="btn-primary">
+                                <i class="fas fa-sign-in-alt"></i>
+                                Sign In
+                            </button>
+                        </form>
+
+                        <!-- Social Login Divider -->
+                        <div class="divider">
+                            <span>Or continue with</span>
+                        </div>
+
+                        <!-- Google OAuth Button -->
+                        <div class="social-login">
+                            <button type="button" class="btn-social-google" id="googleLoginBtn">
+                                <svg class="google-icon" viewBox="0 0 24 24" width="20" height="20" xmlns="http://www.w3.org/2000/svg">
+                                    <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4"></path>
+                                    <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853"></path>
+                                    <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z" fill="#FBBC05"></path>
+                                    <path d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335"></path>
+                                </svg>
+                                Sign in with Google
+                            </button>
+                        </div>
+
+                        <!-- Demo Credentials -->
+                        <div class="demo-credentials">
+                            <p><i class="fas fa-lightbulb"></i> <strong>Demo Credentials:</strong></p>
+                            <div class="demo-accounts">
+                                <div class="demo-account">
+                                    <strong>Buyer:</strong> demo@homeai.com / demo123
+                                </div>
+                                <div class="demo-account">
+                                    <strong>Seller:</strong> seller@homeai.com / seller123
+                                </div>
                             </div>
                         </div>
 
-                        <div class="form-group">
-                            <label for="password">Password</label>
-                            <div class="input-group">
-                                <i class="fas fa-lock"></i>
-                                <input type="password" id="password" name="password" placeholder="Enter your password" required>
-                            </div>
-                        </div>
-
-                        <div class="form-options">
-                            <label class="remember-me">
-                                <input type="checkbox" name="remember_me">
-                                <span>Remember me</span>
-                            </label>
-                        </div>
-
-                        <button type="submit" class="btn-primary">
-                            <i class="fas fa-sign-in-alt"></i>
-                            Sign In
-                        </button>
-
-                        <p class="form-footer">
+                        <!-- Sign Up Link -->
+                        <p style="text-align: center; font-size: 13px; color: var(--charcoal); margin-top: 20px;">
                             Don't have an account? 
-                            <a href="{{ url_for('signup') }}">Sign Up</a>
+                            <a href="{{ url_for('signup') }}" style="color: var(--gold-primary); font-weight: 600; text-decoration: none;">Sign Up</a>
                         </p>
-                    </form>
+                    </div>
                 </div>
             </div>
+        </div>
 
-            <div class="login-right">
-                <div class="gradient-overlay"></div>
-                <div class="right-content">
-                    <h2>Find Your Dream Home</h2>
-                    <p>Access powerful tools to make informed property decisions</p>
-                    <div class="features">
-                        <div class="feature">
+        <!-- Right Section: Showcase -->
+        <div class="auth-right">
+            <div class="auth-showcase">
+                <h3>Find Your Dream Home</h3>
+                
+                <div class="showcase-features">
+                    <div class="showcase-feature">
+                        <div class="feature-icon">
                             <i class="fas fa-chart-line"></i>
-                            <h3>99.78% Accuracy</h3>
-                            <p>Our ML model provides highly accurate price predictions</p>
                         </div>
-                        <div class="feature">
+                        <h4>AI Price Prediction</h4>
+                        <p>Get accurate property valuations powered by advanced machine learning</p>
+                    </div>
+
+                    <div class="showcase-feature">
+                        <div class="feature-icon">
                             <i class="fas fa-map-marked-alt"></i>
-                            <h3>Interactive Maps</h3>
-                            <p>Visualize property prices with heatmaps</p>
                         </div>
-                        <div class="feature">
-                            <i class="fas fa-shield-alt"></i>
-                            <h3>Secure & Private</h3>
-                            <p>Your data is protected with industry-standard encryption</p>
+                        <h4>Interactive Maps</h4>
+                        <p>Visualize property prices and trends across Delhi with heat maps</p>
+                    </div>
+
+                    <div class="showcase-feature">
+                        <div class="feature-icon">
+                            <i class="fas fa-calculator"></i>
                         </div>
+                        <h4>EMI Calculator</h4>
+                        <p>Calculate monthly loan payments with instant results</p>
                     </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <!-- JavaScript -->
+    <script src="{{ url_for('static', filename='js/auth.js') }}"></script>
+    <script>
+        // Password visibility toggle
+        function togglePasswordVisibility(fieldId) {
+            const field = document.getElementById(fieldId);
+            const button = event.target.closest('button');
+            const icon = button.querySelector('i');
+            
+            if (field.type === 'password') {
+                field.type = 'text';
+                icon.classList.remove('fa-eye');
+                icon.classList.add('fa-eye-slash');
+            } else {
+                field.type = 'password';
+                icon.classList.remove('fa-eye-slash');
+                icon.classList.add('fa-eye');
+            }
+        }
+
+        // Form validation
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            const email = document.getElementById('email').value;
+            const password = document.getElementById('password').value;
+            let isValid = true;
+
+            // Email validation
+            const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+            if (!emailRegex.test(email)) {
+                isValid = false;
+                alert('Please enter a valid email address');
+            }
+
+            // Password validation
+            if (password.length < 6) {
+                isValid = false;
+                alert('Password must be at least 6 characters');
+            }
+
+            if (!isValid) {
+                e.preventDefault();
+            }
+        });
+    </script>
 </body>
 </html>
