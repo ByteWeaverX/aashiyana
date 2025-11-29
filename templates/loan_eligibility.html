@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Loan Eligibility Calculator - Aashiyana</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calculator-premium.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="{{ url_for('dashboard') }}" class="nav-logo">
+                <span class="logo-icon">🏡</span>
+                <div class="logo-text">
+                    <h3>Aashiyana</h3>
+                    <p>Your Home, Your Dream</p>
+                </div>
+            </a>
+            <div class="nav-menu">
+                <a href="{{ url_for('dashboard') }}" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{{ url_for('price_prediction') }}" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Price Prediction</span>
+                </a>
+                <a href="{{ url_for('loan_eligibility') }}" class="nav-item active">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>Loan Eligibility</span>
+                </a>
+                <a href="{{ url_for('contact') }}" class="nav-item">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact</span>
+                </a>
+            </div>
+            <div class="nav-user">
+                <div class="user-info">
+                    <div class="user-avatar">{{ current_user.full_name[0].upper() }}</div>
+                </div>
+                <button class="logout-btn" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="header-content">
+            <h1><i class="fas fa-hand-holding-usd"></i> Loan Eligibility Calculator</h1>
+            <p>Check your home loan eligibility as per Indian banking standards</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div class="calculator-wrapper">
+                <!-- Input Form -->
+                <div class="calculator-panel input-panel">
+                    <h2>Your Details</h2>
+                    
+                    <div class="form-group">
+                        <label for="age">
+                            <i class="fas fa-birthday-cake"></i>
+                            Age (Years)
+                        </label>
+                        <input type="number" id="age" min="18" max="80" value="35" class="number-input">
+                        <p class="help-text">Minimum: 18 years, Maximum: 80 years</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="annualIncome">
+                            <i class="fas fa-coins"></i>
+                            Annual Gross Income (₹)
+                        </label>
+                        <input type="range" id="annualIncome" min="300000" max="5000000" step="50000" value="1000000" class="slider">
+                        <div class="input-display">
+                            <input type="number" id="annualIncomeInput" min="300000" value="1000000" class="number-input">
+                            <span class="currency">₹</span>
+                        </div>
+                        <p class="help-text">Minimum required: ₹3 Lakh per annum</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="existingLoan">
+                            <i class="fas fa-credit-card"></i>
+                            Existing Monthly Loan EMI (₹)
+                        </label>
+                        <input type="number" id="existingLoan" min="0" max="500000" step="5000" value="0" class="number-input">
+                        <p class="help-text">Car EMI, other home loans, etc.</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="creditScore">
+                            <i class="fas fa-shield-alt"></i>
+                            Credit Score (CIBIL)
+                        </label>
+                        <input type="range" id="creditScore" min="300" max="900" step="10" value="750" class="slider">
+                        <div class="input-display">
+                            <input type="number" id="creditScoreInput" min="300" max="900" value="750" class="number-input">
+                            <span class="unit">Score</span>
+                        </div>
+                        <p class="help-text">Range: 300-900 (Higher is better)</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="workExp">
+                            <i class="fas fa-briefcase"></i>
+                            Work Experience (Years)
+                        </label>
+                        <input type="number" id="workExp" min="0" max="50" value="10" class="number-input">
+                        <p class="help-text">Current job experience</p>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Employment Type</label>
+                        <select id="empType" class="number-input" onchange="updateEligibility()">
+                            <option value="salaried">Salaried (Government)</option>
+                            <option value="salaried_pvt">Salaried (Private)</option>
+                            <option value="self_employed">Self-Employed</option>
+                            <option value="business">Business Owner</option>
+                        </select>
+                        <p class="help-text">Affects loan eligibility criteria</p>
+                    </div>
+
+                    <button class="btn-reset" onclick="resetLoanForm()">
+                        <i class="fas fa-redo"></i>
+                        Reset All
+                    </button>
+                </div>
+
+                <!-- Results -->
+                <div class="calculator-panel result-panel">
+                    <h2>Eligibility Results</h2>
+                    
+                    <div class="result-highlight">
+                        <div class="result-item">
+                            <p class="result-label">Max Eligible Amount</p>
+                            <p class="result-value" id="maxLoanEligible">₹50,00,000</p>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-section">
+                        <h3>Eligibility Criteria Met</h3>
+                        <div class="eligibility-checklist">
+                            <div class="checklist-item">
+                                <span class="icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="text">Age: Meets requirement (25-70 years)</span>
+                            </div>
+                            <div class="checklist-item">
+                                <span class="icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="text">Income: ₹1,000,000 (Excellent)</span>
+                            </div>
+                            <div class="checklist-item">
+                                <span class="icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="text">Credit Score: 750 (Good)</span>
+                            </div>
+                            <div class="checklist-item">
+                                <span class="icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="text">Debt Ratio: 25% (Healthy)</span>
+                            </div>
+                            <div class="checklist-item">
+                                <span class="icon">
+                                    <i class="fas fa-check"></i>
+                                </span>
+                                <span class="text">Experience: 10+ years (Stable)</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="breakdown-section">
+                        <h3>Key Metrics</h3>
+                        <div class="metrics-grid">
+                            <div class="metric-card">
+                                <p class="metric-label">Monthly Income</p>
+                                <p class="metric-value" id="monthlyIncome">₹83,333</p>
+                            </div>
+                            <div class="metric-card">
+                                <p class="metric-label">Current EMI Burden</p>
+                                <p class="metric-value" id="emiRatio">0%</p>
+                            </div>
+                            <div class="metric-card">
+                                <p class="metric-label">Available Monthly</p>
+                                <p class="metric-value" id="availableMonthly">₹83,333</p>
+                            </div>
+                            <div class="metric-card">
+                                <p class="metric-label">Max Monthly EMI</p>
+                                <p class="metric-value" id="maxEMI">₹41,667</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="tips-box">
+                        <i class="fas fa-lightbulb"></i>
+                        <p><strong>💡 Tip:</strong> Your eligibility is based on current income and debt ratios. Banks may also consider co-applicants and collateral value.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Document Requirements -->
+            <div class="requirements-section">
+                <h2>Required Documents</h2>
+                <div class="requirements-grid">
+                    <div class="requirement-card">
+                        <i class="fas fa-file"></i>
+                        <h4>Identity Proof</h4>
+                        <p>PAN, Aadhar, Passport, Voter ID</p>
+                    </div>
+                    <div class="requirement-card">
+                        <i class="fas fa-address-card"></i>
+                        <h4>Address Proof</h4>
+                        <p>Aadhar, Utility Bill, Rent Agreement</p>
+                    </div>
+                    <div class="requirement-card">
+                        <i class="fas fa-chart-bar"></i>
+                        <h4>Income Proof</h4>
+                        <p>Salary Slip, Form 16, ITR, Business Cert</p>
+                    </div>
+                    <div class="requirement-card">
+                        <i class="fas fa-bank"></i>
+                        <h4>Bank Statements</h4>
+                        <p>Last 6-12 months bank statements</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Comparison with Banks -->
+            <div class="comparison-section">
+                <h2>Typical Bank Eligibility Criteria</h2>
+                <div class="comparison-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Criteria</th>
+                                <th>Minimum</th>
+                                <th>Ideal</th>
+                                <th>Your Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Age</td>
+                                <td>18 years</td>
+                                <td>25-55 years</td>
+                                <td id="ageStatus">✓ 35 years</td>
+                            </tr>
+                            <tr>
+                                <td>Income</td>
+                                <td>₹3 Lakh/year</td>
+                                <td>₹10 Lakh/year</td>
+                                <td id="incomeStatus">✓ ₹1,000,000/year</td>
+                            </tr>
+                            <tr>
+                                <td>Work Experience</td>
+                                <td>1-2 years</td>
+                                <td>5+ years</td>
+                                <td id="expStatus">✓ 10 years</td>
+                            </tr>
+                            <tr>
+                                <td>Credit Score</td>
+                                <td>600+</td>
+                                <td>750+</td>
+                                <td id="creditStatus">✓ 750</td>
+                            </tr>
+                            <tr>
+                                <td>Debt Ratio</td>
+                                <td>Max 50%</td>
+                                <td>Below 35%</td>
+                                <td id="debtStatus">✓ 0%</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- Contact CTA -->
+            <div class="contact-cta">
+                <h2>Ready to Apply?</h2>
+                <p>Get personalized loan guidance from our financial experts</p>
+                <a href="{{ url_for('contact') }}" class="btn-primary">
+                    <i class="fas fa-phone"></i>
+                    Schedule a Consultation
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Aashiyana</h4>
+                <p>Your trusted partner in finding the perfect home</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('contact') }}">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Aashiyana. All rights reserved.</p>
+        </div>
+    </footer>
+
+    <script src="{{ url_for('static', filename='js/loan-eligibility.js') }}"></script>
+</body>
+</html>

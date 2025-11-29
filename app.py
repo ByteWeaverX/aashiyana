@@ -147,7 +147,55 @@ def logout():
 @app.route('/dashboard')
 def dashboard():
     """Main dashboard page - accessible to all, but shows different content for authenticated users"""
-    return render_template('dashboard.html', user=current_user)
+    return render_template('dashboard_premium.html', user=current_user)
+
+
+@app.route('/emi-calculator')
+@login_required
+def emi_calculator():
+    """EMI Calculator page"""
+    return render_template('emi_calculator.html', user=current_user)
+
+
+@app.route('/loan-eligibility')
+@login_required
+def loan_eligibility():
+    """Loan Eligibility Calculator page"""
+    return render_template('loan_eligibility.html', user=current_user)
+
+
+@app.route('/budget-calculator')
+@login_required
+def budget_calculator():
+    """Budget Calculator page"""
+    return render_template('budget_calculator.html', user=current_user)
+
+
+@app.route('/area-converter')
+@login_required
+def area_converter():
+    """Area Unit Converter page"""
+    return render_template('area_converter.html', user=current_user)
+
+
+@app.route('/contact', methods=['GET', 'POST'])
+def contact():
+    """Contact page"""
+    if request.method == 'POST':
+        name = request.form.get('name')
+        email = request.form.get('email')
+        phone = request.form.get('phone')
+        subject = request.form.get('subject')
+        message = request.form.get('message')
+        
+        if all([name, email, phone, subject, message]):
+            # In production, save to database or send email
+            flash('Thank you! We will contact you soon.', 'success')
+            return redirect(url_for('contact'))
+        else:
+            flash('All fields are required', 'danger')
+    
+    return render_template('contact.html', user=current_user)
 
 
 @app.route('/price-prediction')
@@ -310,13 +358,6 @@ def api_filter_properties():
         'count': len(filtered_df),
         'properties': results
     })
-
-
-@app.route('/emi-calculator')
-@login_required
-def emi_calculator():
-    """EMI Calculator page"""
-    return render_template('emi_calculator.html', user=current_user)
 
 
 @app.route('/api/calculate-emi', methods=['POST'])

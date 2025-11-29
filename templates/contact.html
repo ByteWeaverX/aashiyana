@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - Aashiyana</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/calculator-premium.css') }}">
+</head>
+<body>
+    <!-- Navigation Bar -->
+    <nav class="nav-bar">
+        <div class="nav-container">
+            <a href="{{ url_for('dashboard') }}" class="nav-logo">
+                <span class="logo-icon">🏡</span>
+                <div class="logo-text">
+                    <h3>Aashiyana</h3>
+                    <p>Your Home, Your Dream</p>
+                </div>
+            </a>
+            <div class="nav-menu">
+                <a href="{{ url_for('dashboard') }}" class="nav-item">
+                    <i class="fas fa-home"></i>
+                    <span>Dashboard</span>
+                </a>
+                <a href="{{ url_for('price_prediction') }}" class="nav-item">
+                    <i class="fas fa-chart-line"></i>
+                    <span>Price Prediction</span>
+                </a>
+                <a href="{{ url_for('loan_eligibility') }}" class="nav-item">
+                    <i class="fas fa-hand-holding-usd"></i>
+                    <span>Loan Eligibility</span>
+                </a>
+                <a href="{{ url_for('contact') }}" class="nav-item active">
+                    <i class="fas fa-envelope"></i>
+                    <span>Contact</span>
+                </a>
+            </div>
+            <div class="nav-user">
+                <div class="user-info">
+                    <div class="user-avatar">{% if current_user.is_authenticated %}{{ current_user.full_name[0].upper() }}{% else %}?{% endif %}</div>
+                </div>
+                {% if current_user.is_authenticated %}
+                <button class="logout-btn" onclick="handleLogout()">
+                    <i class="fas fa-sign-out-alt"></i>
+                </button>
+                {% endif %}
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="page-header">
+        <div class="header-content">
+            <h1><i class="fas fa-envelope"></i> Contact Us</h1>
+            <p>Get in touch with our expert real estate consultants</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="main-content">
+        <div class="container">
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 2rem; margin-bottom: 3rem;">
+                <!-- Contact Form -->
+                <div class="calculator-panel">
+                    <h2><i class="fas fa-pen-fancy"></i> Send us a Message</h2>
+                    
+                    {% with messages = get_flashed_messages(with_categories=true) %}
+                        {% if messages %}
+                            {% for category, message in messages %}
+                                <div style="background: {% if category == 'success' %}#D4EDDA{% elif category == 'danger' %}#F8D7DA{% else %}#D1ECF1{% endif %}; color: {% if category == 'success' %}#155724{% elif category == 'danger' %}#721C24{% else %}#0C5460{% endif %}; padding: 1rem; border-radius: 0.5rem; margin-bottom: 1.5rem; border-left: 4px solid {% if category == 'success' %}#27AE60{% elif category == 'danger' %}#E74C3C{% else %}#3498DB{% endif %};">
+                                    {{ message }}
+                                </div>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+
+                    <form method="POST" class="contact-form">
+                        <div class="form-group">
+                            <label for="name">
+                                <i class="fas fa-user"></i>
+                                Full Name *
+                            </label>
+                            <input type="text" id="name" name="name" required class="number-input" placeholder="Your full name">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="email">
+                                <i class="fas fa-envelope"></i>
+                                Email Address *
+                            </label>
+                            <input type="email" id="email" name="email" required class="number-input" placeholder="your.email@example.com">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="phone">
+                                <i class="fas fa-phone"></i>
+                                Phone Number *
+                            </label>
+                            <input type="tel" id="phone" name="phone" required class="number-input" placeholder="+91 98765 43210">
+                        </div>
+
+                        <div class="form-group">
+                            <label for="subject">
+                                <i class="fas fa-heading"></i>
+                                Subject *
+                            </label>
+                            <select id="subject" name="subject" required class="number-input">
+                                <option value="">Select a subject</option>
+                                <option value="loan_enquiry">Loan Enquiry</option>
+                                <option value="property_search">Property Search</option>
+                                <option value="price_prediction">Price Prediction Help</option>
+                                <option value="general_inquiry">General Inquiry</option>
+                                <option value="feedback">Feedback</option>
+                            </select>
+                        </div>
+
+                        <div class="form-group">
+                            <label for="message">
+                                <i class="fas fa-comment"></i>
+                                Message *
+                            </label>
+                            <textarea id="message" name="message" required class="number-input" rows="5" placeholder="Write your message here..." style="resize: vertical; font-family: 'Poppins', sans-serif;"></textarea>
+                        </div>
+
+                        <button type="submit" style="width: 100%; padding: 1rem; background: linear-gradient(135deg, #C9A961, #A67C52); color: white; border: none; border-radius: 0.75rem; font-weight: 600; cursor: pointer; transition: all 0.3s ease; display: flex; align-items: center; justify-content: center; gap: 0.5rem;">
+                            <i class="fas fa-paper-plane"></i>
+                            Send Message
+                        </button>
+                    </form>
+                </div>
+
+                <!-- Contact Information -->
+                <div>
+                    <div class="calculator-panel" style="margin-bottom: 2rem;">
+                        <h2><i class="fas fa-info-circle"></i> Contact Information</h2>
+                        
+                        <div style="margin-bottom: 1.5rem;">
+                            <h4 style="color: #1B3A6B; margin-bottom: 0.5rem;">
+                                <i class="fas fa-map-marker-alt" style="color: #C9A961;"></i>
+                                Headquarters
+                            </h4>
+                            <p style="margin: 0; color: #6B6B6B;">
+                                Aashiyana Real Estate<br>
+                                New Delhi, India<br>
+                                PIN: 110001
+                            </p>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <h4 style="color: #1B3A6B; margin-bottom: 0.5rem;">
+                                <i class="fas fa-phone" style="color: #C9A961;"></i>
+                                Phone
+                            </h4>
+                            <p style="margin: 0; color: #6B6B6B;">
+                                <a href="tel:+911112223334" style="color: #C9A961; text-decoration: none;">+91-11-1122-2333</a><br>
+                                <a href="tel:+919876543210" style="color: #C9A961; text-decoration: none;">+91-98765-43210</a>
+                            </p>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <h4 style="color: #1B3A6B; margin-bottom: 0.5rem;">
+                                <i class="fas fa-envelope" style="color: #C9A961;"></i>
+                                Email
+                            </h4>
+                            <p style="margin: 0; color: #6B6B6B;">
+                                <a href="mailto:info@aashiyana.com" style="color: #C9A961; text-decoration: none;">info@aashiyana.com</a><br>
+                                <a href="mailto:support@aashiyana.com" style="color: #C9A961; text-decoration: none;">support@aashiyana.com</a>
+                            </p>
+                        </div>
+
+                        <div style="margin-bottom: 1.5rem;">
+                            <h4 style="color: #1B3A6B; margin-bottom: 0.5rem;">
+                                <i class="fas fa-clock" style="color: #C9A961;"></i>
+                                Business Hours
+                            </h4>
+                            <p style="margin: 0; color: #6B6B6B;">
+                                Monday - Friday: 9:00 AM - 6:00 PM<br>
+                                Saturday: 10:00 AM - 4:00 PM<br>
+                                Sunday: Closed
+                            </p>
+                        </div>
+                    </div>
+
+                    <div class="calculator-panel">
+                        <h2><i class="fas fa-star"></i> Why Choose Us?</h2>
+                        <div style="display: flex; flex-direction: column; gap: 1rem;">
+                            <div style="display: flex; gap: 1rem;">
+                                <i class="fas fa-check-circle" style="color: #27AE60; font-size: 1.5rem; flex-shrink: 0;"></i>
+                                <div>
+                                    <h5 style="color: #1B3A6B; margin: 0 0 0.25rem 0;">Expert Consultants</h5>
+                                    <p style="margin: 0; font-size: 0.9rem; color: #6B6B6B;">10+ years of real estate experience</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem;">
+                                <i class="fas fa-check-circle" style="color: #27AE60; font-size: 1.5rem; flex-shrink: 0;"></i>
+                                <div>
+                                    <h5 style="color: #1B3A6B; margin: 0 0 0.25rem 0;">Fast Response</h5>
+                                    <p style="margin: 0; font-size: 0.9rem; color: #6B6B6B;">Reply within 24 hours</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem;">
+                                <i class="fas fa-check-circle" style="color: #27AE60; font-size: 1.5rem; flex-shrink: 0;"></i>
+                                <div>
+                                    <h5 style="color: #1B3A6B; margin: 0 0 0.25rem 0;">Best Deals</h5>
+                                    <p style="margin: 0; font-size: 0.9rem; color: #6B6B6B;">Access to exclusive properties</p>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 1rem;">
+                                <i class="fas fa-check-circle" style="color: #27AE60; font-size: 1.5rem; flex-shrink: 0;"></i>
+                                <div>
+                                    <h5 style="color: #1B3A6B; margin: 0 0 0.25rem 0;">Trusted Service</h5>
+                                    <p style="margin: 0; font-size: 0.9rem; color: #6B6B6B;">50,000+ satisfied customers</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- FAQ Section -->
+            <div class="comparison-section">
+                <h2>Frequently Asked Questions</h2>
+                <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+                    <div>
+                        <h4 style="color: #1B3A6B;">How do I search for properties?</h4>
+                        <p style="color: #6B6B6B;">You can use our advanced search filters on the dashboard to find properties based on budget, location, size, and other preferences.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #1B3A6B;">What documents are needed for a loan?</h4>
+                        <p style="color: #6B6B6B;">Check our Loan Eligibility page for a complete list of required documents for home loan applications.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #1B3A6B;">Can I get a price prediction?</h4>
+                        <p style="color: #6B6B6B;">Yes! Our AI-powered price prediction tool estimates property prices based on location, size, and market data.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #1B3A6B;">How accurate is the EMI calculator?</h4>
+                        <p style="color: #6B6B6B;">Our EMI calculator follows standard banking formulas and provides accurate estimates for planning purposes.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #1B3A6B;">Do you help with loan applications?</h4>
+                        <p style="color: #6B6B6B;">Absolutely! Our team assists with the entire loan application process and connects you with lenders.</p>
+                    </div>
+                    <div>
+                        <h4 style="color: #1B3A6B;">Are there any hidden charges?</h4>
+                        <p style="color: #6B6B6B;">No hidden charges. All our tools are free to use. Professional consultation services are available at transparent rates.</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Map Placeholder -->
+            <div style="margin-top: 3rem; background: linear-gradient(135deg, #1B3A6B, #2A5BA8); border-radius: 1rem; padding: 3rem; text-align: center; color: white;">
+                <h2 style="margin-bottom: 1rem;"><i class="fas fa-map"></i> Find Us on Google Maps</h2>
+                <p style="margin-bottom: 1.5rem;">Visit our office to meet with our real estate experts</p>
+                <a href="#" style="display: inline-flex; align-items: center; gap: 0.5rem; padding: 1rem 2rem; background: #C9A961; color: white; text-decoration: none; border-radius: 0.75rem; font-weight: 600;">
+                    <i class="fas fa-map-location-dot"></i>
+                    Open Google Maps
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h4>About Aashiyana</h4>
+                <p>Your trusted partner in real estate journey</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="{{ url_for('dashboard') }}">Dashboard</a></li>
+                    <li><a href="{{ url_for('price_prediction') }}">Price Prediction</a></li>
+                    <li><a href="{{ url_for('emi_calculator') }}">EMI Calculator</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Follow Us</h4>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                </div>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 Aashiyana. All rights reserved. | <a href="#" style="color: #C9A961;">Privacy Policy</a> | <a href="#" style="color: #C9A961;">Terms of Service</a></p>
+        </div>
+    </footer>
+
+    <script>
+        function handleLogout() {
+            if (confirm('Are you sure you want to logout?')) {
+                window.location.href = '/logout';
+            }
+        }
+    </script>
+</body>
+</html>
