@@ -476,4 +476,6 @@ if __name__ == '__main__':
     print("\n🌐 Open in browser: http://localhost:5000")
     print("="*80 + "\n")
     
-    app.run(debug=True, port=5000)
+    # Get port from environment variable or default to 5000
+    port = int(os.getenv('PORT', 5000))
+    app.run(debug=False, host='0.0.0.0', port=port)

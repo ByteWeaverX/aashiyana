@@ -18,8 +18,15 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project
 COPY . /app
 
-# Expose port
-EXPOSE 5000
+# Set default port
+ENV PORT=5000
 
-# Use gunicorn as production WSGI server
-CMD ["gunicorn", "app:app", "-w", "4", "-b", "0.0.0.0:5000", "--timeout", "120"]
+# Expose port
+EXPOSE ${PORT}
+
+# Create entrypoint script to use environment variables
+RUN echo '#!/bin/bash\ngunicorn app:app -w 4 -b 0.0.0.0:${PORT} --timeout 120' > /app/entrypoint.sh && \
+    chmod +x /app/entrypoint.sh
+
+# Use entrypoint script to properly interpret environment variables
+ENTRYPOINT ["/app/entrypoint.sh"]
