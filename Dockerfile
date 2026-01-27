@@ -2,6 +2,7 @@ FROM python:3.11-slim
 
 ENV PYTHONDONTWRITEBYTECODE=1
 ENV PYTHONUNBUFFERED=1
+ENV PORT=5000
 
 # Install system dependencies required by some Python packages
 RUN apt-get update \
@@ -18,15 +19,8 @@ RUN pip install --no-cache-dir -r requirements.txt
 # Copy project
 COPY . /app
 
-# Set default port
-ENV PORT=5000
-
 # Expose port
 EXPOSE ${PORT}
 
-# Create entrypoint script to use environment variables
-RUN echo '#!/bin/bash\ngunicorn app:app -w 4 -b 0.0.0.0:${PORT} --timeout 120' > /app/entrypoint.sh && \
-    chmod +x /app/entrypoint.sh
-
-# Use entrypoint script to properly interpret environment variables
-ENTRYPOINT ["/app/entrypoint.sh"]
+# Use shell form of CMD to expand environment variables at runtime
+CMD sh -c 'gunicorn app:app -w 4 -b 0.0.0.0:${PORT} --timeout 120'
