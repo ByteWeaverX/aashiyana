@@ -12,18 +12,39 @@ from predict import HousePricePredictor, format_price
 from database import db, User
 import json
 import os
+from dotenv import load_dotenv
+
+# Load environment variables
+load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'your-secret-key-change-in-production-2024'  # Change this in production
+
+# Security configuration
+app.secret_key = os.getenv('SECRET_KEY', 'dev-key-change-in-production')
 app.config['SESSION_COOKIE_SAMESITE'] = 'Lax'
-app.config['SESSION_COOKIE_SECURE'] = False  # Set to True in production with HTTPS
+
+# HTTPS/Security settings - enable in production
+FLASK_ENV = os.getenv('FLASK_ENV', 'development')
+if FLASK_ENV == 'production':
+    app.config['SESSION_COOKIE_SECURE'] = True
+else:
+    app.config['SESSION_COOKIE_SECURE'] = False
 
 # Database configuration
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///users.db'
+DATABASE_URL = os.getenv('DATABASE_URL', 'sqlite:///users.db')
+# Fix PostgreSQL URI format for SQLAlchemy
+if DATABASE_URL.startswith('postgres://'):
+    DATABASE_URL = DATABASE_URL.replace('postgres://', 'postgresql://', 1)
+
+app.config['SQLALCHEMY_DATABASE_URI'] = DATABASE_URL
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 
 # Initialize database
 db.init_app(app)
+
+# Create database tables
+with app.app_context():
+    db.create_all()
 
 # Initialize Flask-Login
 login_manager = LoginManager()
@@ -446,7 +467,7 @@ if __name__ == '__main__':
     init_database()
     
     print("="*80)
-    print("  HOMEAI - AI-POWERED PROPERTY PLATFORM")
+    print("  AASHIYANA - AI-POWERED PROPERTY PLATFORM")
     print("="*80)
     print("\n🚀 Starting Flask server...")
     print("\n📧 Demo Accounts:")

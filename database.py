@@ -5,8 +5,15 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_login import UserMixin
 from werkzeug.security import generate_password_hash, check_password_hash
 from datetime import datetime
+import os
 
 db = SQLAlchemy()
+
+def init_db(app):
+    """Initialize database with app context"""
+    db.init_app(app)
+    with app.app_context():
+        db.create_all()
 
 class User(UserMixin, db.Model):
     """User model for authentication"""
